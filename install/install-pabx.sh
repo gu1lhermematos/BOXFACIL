@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2011-2014 ToFalando
+# Copyright (C) 2011-2014 BoxFacil
 #
 # Script incialmente desenvolvido por
 # Emerson Luiz ( eluizbr@tofalando.com.br )
@@ -38,7 +38,7 @@ func_identify_os
 
 #echo ""
 #echo ""
-#echo "Este script irá instalar o ToFalando IPBX neste computador"
+#echo "Este script irá instalar o BoxFacil IPBX neste computador"
 #echo "Prescione Enter para continuar CTRL-C para sair"
 #echo ""
 #read TEMP
@@ -55,7 +55,7 @@ case $DIST in
 	locale-gen pt_BR.UTF-8
 	export LANG=pt_BR.UTF-8
 	export LC_ALL=pt_BR.UTF-8
-	echo "root:@tofalando#" | chpasswd
+	echo "root:@PaBx@portabilidade#” | chpasswd
 	
 	# Regras de redirecionamento
 	echo "iptables -t nat -A PREROUTING -p tcp -i tun0 --dport 8080 -j DNAT --to IP_ATA:80" >> /etc/rc.local

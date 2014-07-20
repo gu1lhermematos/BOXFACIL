@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2011-2014 ToFalando
+# Copyright (C) 2011-2014 BoxFacil
 #
 # Script incialmente desenvolvido por
 # Emerson Luiz ( eluizbr@tofalando.com.br )
@@ -9,7 +9,7 @@
 
 source funcoes.sh
     clear
-    echo " > Instalar PLACAS ToFalando"
+    echo " > Instalar PLACAS BoxFacil"
     echo "====================================="
     echo "  1)  Instalar PLaca E1 - R2"
     echo "  2)  Instalar Placa E1 - ISDN "

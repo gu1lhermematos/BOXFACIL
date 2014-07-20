@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright (C) 2011-2014 ToFalando
+# Copyright (C) 2011-2014 BoxFacil
 #
 # Script incialmente desenvolvido por
 # Emerson Luiz ( eluizbr@tofalando.com.br )
@@ -13,7 +13,7 @@ source funcoes.sh
 #BRANCH='devel'
 
     clear
-    echo " > Instalar ToFalando IPBX"
+    echo " > Instalar BoxFacil IPBX"
     echo "====================================="
     echo "  1)  Instalar Central E1 / Placas"
     echo "  2)  Instalar Central SIP"
