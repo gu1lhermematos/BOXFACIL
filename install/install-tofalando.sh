@@ -1,7 +1,7 @@
-#!/bin/bash
+master#!/bin/bash
 source funcoes.sh
 # Configurar o Branch
-#BRANCH='devel'
+#BRANCH='master'
 
 
 cd /usr/src/

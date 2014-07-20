@@ -8,7 +8,7 @@
 # Atualizado por Guilherme Matos (guilherme@boxfacil.com.br)
 
 # Configurar o Branch
-BRANCH='devel'
+BRANCH='master'
 
 
   IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
