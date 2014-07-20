@@ -28,7 +28,7 @@ make samples
 cd /usr/src/
 
 
-git clone https://github.com/eluizbr/BOXFACIL.git
+git clone https://github.com/gu1lhermematos/BOXFACIL.git
 mv BOXFACIL ipbx
 mv ipbx  /var/www/
 cd /var/www/

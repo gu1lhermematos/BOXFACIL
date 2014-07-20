@@ -5,6 +5,8 @@
 # Script incialmente desenvolvido por
 # Emerson Luiz ( eluizbr@tofalando.com.br )
 
+# Atualizado por Guilherme Matos (guilherme@boxfacil.com.br)
+
 # Configurar o Branch
 BRANCH='master'
 
@@ -402,7 +404,7 @@ func_install_A2B  () {
 				#Instalando o A2Billing
 				mkdir /usr/src/billing
 				cd /usr/src/billing
-				wget --no-check-certificate https://raw.githubusercontent.com/eluizbr/BOXFACIL/$BRANCH/install/a2billing.tgz
+				wget --no-check-certificate https://raw.githubusercontent.com/gu1lhermematos/BOXFACIL/$BRANCH/install/a2billing.tgz
 				tar zxvf a2billing.tgz
 				chmod -R 777 /usr/src/billing
 				mv a2billing-master/* .
@@ -436,13 +438,13 @@ func_install_A2B  () {
 				touch /var/log/a2billing/api_callback_request.log
 				touch /var/log/a2billing/a2billing_agi.log
 				cd /usr/src/
-				wget --no-check-certificate https://raw.githubusercontent.com/eluizbr/BOXFACIL/$BRANCH/install/a2billing.conf
+				wget --no-check-certificate https://raw.githubusercontent.com/gu1lhermematos/BOXFACIL/$BRANCH/install/a2billing.conf
 				mv a2billing.conf /usr/src/billing/
 				
 				# Instalando base A2B
 				cd /var/www/ipbx/install
 				echo "create database billing" | mysql -u root -ptofalando2014
-				wget --no-check-certificate https://raw.githubusercontent.com/eluizbr/BOXFACIL/$BRANCH/install/billing.sql
+				wget --no-check-certificate https://raw.githubusercontent.com/gu1lhermematos/BOXFACIL/$BRANCH/install/billing.sql
 				mysql -u root -ptofalando2014 billing < billing.sql
 				rm -rf billing.conf
 				# FIM Instalando base A2B

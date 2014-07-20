@@ -13,7 +13,7 @@ rm -rf ipbx
 
 cd /usr/src/
 
-git clone https://github.com/eluizbr/BOXFACIL.git
+git clone https://github.com/gu1lhermematos/BOXFACIL.git
 cd BOXFACIL
 git branch $BRANCH
 git pull origin $BRANCH

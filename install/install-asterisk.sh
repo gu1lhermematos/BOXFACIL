@@ -5,6 +5,8 @@
 # Script incialmente desenvolvido por
 # Emerson Luiz ( eluizbr@tofalando.com.br )
 
+# Atualizado por guilherme Matos (guilherme@boxfacil.com.br)
+
 
 source funcoes.sh
 # Configurar o Branch
@@ -36,7 +38,7 @@ while [ $ExitFinish -eq 0 ]; do
                         #Instalar Placas
                         clear
                         cd /usr/src/
-                        wget --no-check-certificate https://raw.github.com/eluizbr/BOXFACIL/$BRANCH/install/install-cards.sh
+                        wget --no-check-certificate https://raw.github.com/gu1lhermematos/BOXFACIL/$BRANCH/install/install-cards.sh
                         ExitFinish=1
                         bash install-cards.sh
 		;;
@@ -47,7 +49,7 @@ while [ $ExitFinish -eq 0 ]; do
 		      #Instalando ASTERISK
 			clear
 			cd /usr/src/
-			wget --no-check-certificate https://raw.githubusercontent.com/eluizbr/BOXFACIL/$BRANCH/install/install-tofalando.sh
+			wget --no-check-certificate https://raw.githubusercontent.com/gu1lhermematos/BOXFACIL/$BRANCH/install/install-tofalando.sh
 			func_install_asterisk
 			bash install-tofalando.sh
 			cd /var/www/snep/install/

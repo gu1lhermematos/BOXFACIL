@@ -5,6 +5,8 @@
 # Script incialmente desenvolvido por
 # Emerson Luiz ( eluizbr@tofalando.com.br )
 
+# Atualizado por Guilherme Matos (guilherme@boxfacil.com.br)
+
 # Configurar o Branch
 BRANCH='master'
 
@@ -83,6 +85,6 @@ esac
 
 #Instalar o Asterisk
 cd /usr/src/
-wget --no-check-certificate  https://raw.github.com/eluizbr/BOXFACIL/$BRANCH/install/funcoes.sh
-wget --no-check-certificate  https://raw.github.com/eluizbr/BOXFACIL/$BRANCH/install/install-asterisk.sh
+wget --no-check-certificate  https://raw.github.com/gu1lhermematos/BOXFACIL/$BRANCH/install/funcoes.sh
+wget --no-check-certificate  https://raw.github.com/gu1lhermematos/BOXFACIL/$BRANCH/install/install-asterisk.sh
 bash install-asterisk.sh

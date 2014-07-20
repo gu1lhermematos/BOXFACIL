@@ -5,6 +5,8 @@
 # Script incialmente desenvolvido por
 # Emerson Luiz ( eluizbr@tofalando.com.br )
 
+# Atualizado por Guilherme Matos (guilherme@boxfacil.com.br)
+
 source funcoes.sh
 
 # Checar asterisk

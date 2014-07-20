@@ -4,6 +4,9 @@
 #
 # Script incialmente desenvolvido por
 # Emerson Luiz ( eluizbr@tofalando.com.br )
+
+# Atualizado por Guilherme Matos (guilherme@boxfacil.com.br)
+
 echo "`ip addr show eth0 | cut -c16-32 | egrep \"[0-9a-z]{2}[:][0-9a-z]{2}[:][0-9a-z]{2}[:][0-9a-z]{2}[:][0-9a-z]{2}[:][0-9a-z]{2}$\"`" | tr -d ' : ' >/tmp/mac.txt
 MAC=$(cat /tmp/mac.txt)
 ALEATORIO=$MAC
@@ -56,8 +59,8 @@ ff02::2 ip6-allrouters" >> /etc/hosts
 	ssh root@vpn.tofalando.com.br '/usr/src/gera-key.sh '$TOFALANDO''
 	scp root@vpn.tofalando.com.br:/etc/openvpn/easy-rsa/keys/$TOFALANDO* .
 
-	wget https://raw.githubusercontent.com/eluizbr/BOXFACIL/master/install/etc/openvpn/client.conf
-	wget https://raw.githubusercontent.com/eluizbr/BOXFACIL/master/install/etc/openvpn/ca.crt
+	wget https://raw.githubusercontent.com/gu1lhermematos/BOXFACIL/master/install/etc/openvpn/client.conf
+	wget https://raw.githubusercontent.com/gu1lhermematos/BOXFACIL/master/install/etc/openvpn/ca.crt
 
 	sed -i s/"cert ipbx.crt"/"cert "$TOFALANDO".crt"/g /etc/openvpn/client.conf
 	sed -i s/"key ipbx.key"/"key "$TOFALANDO".key"/g /etc/openvpn/client.conf
