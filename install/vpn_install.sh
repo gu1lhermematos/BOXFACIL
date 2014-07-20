@@ -56,8 +56,8 @@ ff02::2 ip6-allrouters" >> /etc/hosts
 	ssh root@vpn.tofalando.com.br '/usr/src/gera-key.sh '$TOFALANDO''
 	scp root@vpn.tofalando.com.br:/etc/openvpn/easy-rsa/keys/$TOFALANDO* .
 
-	wget https://raw.githubusercontent.com/eluizbr/VOXIPBX/master/install/etc/openvpn/client.conf
-	wget https://raw.githubusercontent.com/eluizbr/VOXIPBX/master/install/etc/openvpn/ca.crt
+	wget https://raw.githubusercontent.com/eluizbr/BOXFACIL/master/install/etc/openvpn/client.conf
+	wget https://raw.githubusercontent.com/eluizbr/BOXFACIL/master/install/etc/openvpn/ca.crt
 
 	sed -i s/"cert ipbx.crt"/"cert "$TOFALANDO".crt"/g /etc/openvpn/client.conf
 	sed -i s/"key ipbx.key"/"key "$TOFALANDO".key"/g /etc/openvpn/client.conf

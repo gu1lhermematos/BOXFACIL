@@ -83,6 +83,6 @@ esac
 
 #Instalar o Asterisk
 cd /usr/src/
-wget --no-check-certificate  https://raw.github.com/eluizbr/VOXIPBX/$BRANCH/install/funcoes.sh
-wget --no-check-certificate  https://raw.github.com/eluizbr/VOXIPBX/$BRANCH/install/install-asterisk.sh
+wget --no-check-certificate  https://raw.github.com/eluizbr/BOXFACIL/$BRANCH/install/funcoes.sh
+wget --no-check-certificate  https://raw.github.com/eluizbr/BOXFACIL/$BRANCH/install/install-asterisk.sh
 bash install-asterisk.sh

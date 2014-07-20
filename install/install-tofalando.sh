@@ -13,13 +13,13 @@ rm -rf ipbx
 
 cd /usr/src/
 
-git clone https://github.com/eluizbr/VOXIPBX.git
-cd VOXIPBX
+git clone https://github.com/eluizbr/BOXFACIL.git
+cd BOXFACIL
 git branch $BRANCH
 git pull origin $BRANCH
 cd ..
 clear
-mv VOXIPBX ipbx
+mv BOXFACIL ipbx
 mv ipbx  /var/www/
 cd /var/www/
 chown -R www-data.www-data *

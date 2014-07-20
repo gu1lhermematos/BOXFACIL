@@ -34,7 +34,7 @@ while [ $ExitFinish -eq 0 ]; do
 				func_install_dahdi
 				func_install_openr2
 				func_install_asterisk
-				wget --no-check-certificate https://raw.githubusercontent.com/eluizbr/VOXIPBX/$BRANCH/install/install-tofalando.sh
+				wget --no-check-certificate https://raw.githubusercontent.com/eluizbr/BOXFACIL/$BRANCH/install/install-tofalando.sh
 				bash install-tofalando.sh
 				cd /var/www/ipbx/install/
 				mysql -uroot -ptofalando2014 snep25 < tofalando.sql
@@ -53,7 +53,7 @@ while [ $ExitFinish -eq 0 ]; do
 				func_install_dahdi
 				func_install_libpri
 				func_install_asterisk
-				wget --no-check-certificate https://raw.githubusercontent.com/eluizbr/VOXIPBX/$BRANCH/install/install-tofalando.sh
+				wget --no-check-certificate https://raw.githubusercontent.com/eluizbr/BOXFACIL/$BRANCH/install/install-tofalando.sh
 				bash install-tofalando.sh
 				cd /var/www/ipbx/install/
 				mysql -uroot -ptofalando2014 snep25 < tofalando.sql
@@ -69,7 +69,7 @@ while [ $ExitFinish -eq 0 ]; do
 				func_install_dahdi_placas
 				func_install_asterisk
 				func_install_g729
-				wget --no-check-certificate https://raw.githubusercontent.com/eluizbr/VOXIPBX/$BRANCH/install/install-tofalando.sh
+				wget --no-check-certificate https://raw.githubusercontent.com/eluizbr/BOXFACIL/$BRANCH/install/install-tofalando.sh
 				bash install-tofalando.sh
 				cd /var/www/ipbx/install/placas/
 				mysql -uroot -ptofalando2014 snep25 < placa_FXO.sql
@@ -90,7 +90,7 @@ while [ $ExitFinish -eq 0 ]; do
 				func_install_openr2
 				func_install_asterisk
 				func_install_g729
-				wget --no-check-certificate https://raw.githubusercontent.com/eluizbr/VOXIPBX/$BRANCH/install/install-tofalando.sh
+				wget --no-check-certificate https://raw.githubusercontent.com/eluizbr/BOXFACIL/$BRANCH/install/install-tofalando.sh
 				bash install-tofalando.sh
 				cd /var/www/ipbx/install/
 				mysql -uroot -ptofalando2014 snep25 < tofalando.sql
@@ -110,7 +110,7 @@ while [ $ExitFinish -eq 0 ]; do
 				func_install_dahdi_placas
 				func_install_asterisk
 				func_install_g729
-				wget --no-check-certificate https://raw.githubusercontent.com/eluizbr/VOXIPBX/$BRANCH/install/install-tofalando.sh
+				wget --no-check-certificate https://raw.githubusercontent.com/eluizbr/BOXFACIL/$BRANCH/install/install-tofalando.sh
 				bash install-tofalando.sh
 				cd /var/www/ipbx/install/
 				mysql -uroot -ptofalando2014 snep25 < tofalando.sql

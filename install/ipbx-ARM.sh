@@ -28,8 +28,8 @@ make samples
 cd /usr/src/
 
 
-git clone https://github.com/eluizbr/VOXIPBX.git
-mv VOXIPBX ipbx
+git clone https://github.com/eluizbr/BOXFACIL.git
+mv BOXFACIL ipbx
 mv ipbx  /var/www/
 cd /var/www/
 chown -R www-data.www-data *

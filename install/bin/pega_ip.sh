@@ -1,9 +1,11 @@
 #!/bin/bash
 
-# Copyright (C) 2011-2014 ToFalando
+# Copyright (C) 2011-2014 BoxFacil
 #
 # Script incialmente desenvolvido por
 # Emerson Luiz ( eluizbr@tofalando.com.br )
+
+# Atualizado por Guilherme Matos (guilherme@boxfacil.com.br)
 
 # Configurar o Branch
 BRANCH='devel'
