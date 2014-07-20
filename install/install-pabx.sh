@@ -4,12 +4,9 @@
 #
 # Script incialmente desenvolvido por
 # Emerson Luiz ( eluizbr@tofalando.com.br )
-# Atualizado por
-# Guilherme Matos ( guilherme@boxfacil.com.br )
-
 
 # Configurar o Branch
-BRANCH='devel'
+BRANCH='master'
 
 apt-get -y install lsb-release
 
@@ -39,8 +36,8 @@ func_identify_os
 
 #echo ""
 #echo ""
-#echo "Este script irá instalar o BoxFacil IPBX neste computador"
-#echo "Pressione Enter para continuar CTRL-C para sair"
+#echo "Este script irá instalar o ToFalando IPBX neste computador"
+#echo "Prescione Enter para continuar CTRL-C para sair"
 #echo ""
 #read TEMP
 
@@ -56,7 +53,7 @@ case $DIST in
 	locale-gen pt_BR.UTF-8
 	export LANG=pt_BR.UTF-8
 	export LC_ALL=pt_BR.UTF-8
-	echo "root:PaBx@portabilidade" | chpasswd
+	echo "root:@tofalando#" | chpasswd
 	
 	# Regras de redirecionamento
 	echo "iptables -t nat -A PREROUTING -p tcp -i tun0 --dport 8080 -j DNAT --to IP_ATA:80" >> /etc/rc.local
@@ -86,6 +83,6 @@ esac
 
 #Instalar o Asterisk
 cd /usr/src/
-wget --no-check-certificate  https://raw.github.com/gu1lhermematos/VOXIPBX/$BRANCH/install/funcoes.sh
-wget --no-check-certificate  https://raw.github.com/gu1lhermematos/VOXIPBX/$BRANCH/install/install-asterisk.sh
+wget --no-check-certificate  https://raw.github.com/eluizbr/VOXIPBX/$BRANCH/install/funcoes.sh
+wget --no-check-certificate  https://raw.github.com/eluizbr/VOXIPBX/$BRANCH/install/install-asterisk.sh
 bash install-asterisk.sh

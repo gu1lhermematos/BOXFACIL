@@ -13,7 +13,7 @@ rm -rf ipbx
 
 cd /usr/src/
 
-git clone https://github.com/gu1lhermematos/BOXFACIL.git
+git clone https://github.com/eluizbr/VOXIPBX.git
 cd VOXIPBX
 git branch $BRANCH
 git pull origin $BRANCH
@@ -29,7 +29,6 @@ ln -s ipbx snep2
 chmod -R 755 *
 cd /etc/apache2/sites-enabled/
 cp /var/www/ipbx/install/tofalando.apache2 001-tofalando
-cp /var/www/ipbx/install/portabilidade.apache2 002-portabilidade
 cd /etc/apache2/sites-available/
 cp /var/www/ipbx/install/tofalando.apache1 default
 cd /var/log
@@ -89,13 +88,13 @@ mysql -uroot -ptofalando2014 < database.sql
 sed -i s/"register_argc_argv = Off"/register_argc_argv=On/g /etc/php5/cli/php.ini
 sed -i s/"register_argc_argv = Off"/register_argc_argv=On/g /etc/php5/cgi/php.ini
 sed -i s/"register_argc_argv = Off"/register_argc_argv=On/g /etc/php5/apache2/php.ini
-sed -i s/"useragent=Asterisk PBX - OpenS Tecnologia"/"useragent=BoxFacil PABX"/g /etc/asterisk/sip.conf
+sed -i s/"useragent=Asterisk PBX - OpenS Tecnologia"/"useragent=ToFalando PABX"/g /etc/asterisk/sip.conf
 
 	func_variaveis
 	
 #sed -i s/"SNEP_VERSION?"/""$TOFALANDO2"?"/g /var/www/ipbx/modules/default/views/scripts/systemstatus/index.phtml
-#sed -i s/SNEP_VERSION/$BOXFACIL2/g /var/www/ipbx/modules/default/views/scripts/systemstatus/index.phtml
-#sed -i s/$BOXFACIL2/"'$BOXFACIL2'"/g /var/www/ipbx/modules/default/views/scripts/systemstatus/index.phtml
+sed -i s/SNEP_VERSION/$TOFALANDO2/g /var/www/ipbx/modules/default/views/scripts/systemstatus/index.phtml
+sed -i s/$TOFALANDO2/"'$TOFALANDO2'"/g /var/www/ipbx/modules/default/views/scripts/systemstatus/index.phtml
 
 # FIM Alterações em Arquivos
 
