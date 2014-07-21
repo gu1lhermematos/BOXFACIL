@@ -39,3 +39,45 @@ CREATE TABLE IF NOT EXISTS `cache` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--
+-- Banco de Dados: `portabilidade`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `controle`
+--
+
+CREATE TABLE IF NOT EXISTS `controle` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `numero` varchar(20) NOT NULL,
+  `operadora` text NOT NULL,
+  `data` varchar(20) NOT NULL,
+  `hora` time NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9718 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `user_id` int(10) NOT NULL AUTO_INCREMENT,
+  `username` varchar(128) NOT NULL,
+  `password` varchar(1024) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Extraindo dados da tabela `users`
+--
+
+INSERT INTO `users` (`user_id`, `username`, `password`) VALUES
+(1, 'admin', '5d0cbce651d75d723c666ed3ea629ba8');
+
