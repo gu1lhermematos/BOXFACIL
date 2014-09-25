@@ -23,12 +23,12 @@ func_identify_os() {
             	exit 255
         fi
         
-#elif [ -f /etc/debian_version ]; then
-#	 DIST='DEBIAN'
-#	 if [ "$(lsb_release -cs)" != "wheezy" ]; then
- #           	echo "A instalação funciona apenas no Ubuntu LTS 12.04 Debian 7.X"
-#            	exit 255
-#        fi
+elif [ -f /etc/debian_version ]; then
+	 DIST='DEBIAN'
+	 if [ "$(lsb_release -cs)" != "wheezy" ]; then
+            	echo "A instalação funciona apenas no Ubuntu LTS 12.04 Debian 7.X"
+            	exit 255
+        fi
 else
         echo "A instalação funciona apenas no Ubuntu LTS 12.04"
         exit 1
@@ -46,7 +46,7 @@ func_identify_os
 
 
 case $DIST in
-    'UBUNTU')
+    'DEBIAN')
         apt-get -y update
 	apt-get -y upgrade
 	echo 1 > /proc/sys/net/ipv4/ip_forward
