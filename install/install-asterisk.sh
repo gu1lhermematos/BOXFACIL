@@ -123,7 +123,14 @@ while [ $ExitFinish -eq 0 ]; do
 			func_install_A2B
 			bash install-asterisk.sh
 		;;
-
+		
+		8)
+		
+			#Install VPN
+			clear
+			func_vpn
+			bash install-asterisk.sh
+		;;
 
 		0)
         		clear
