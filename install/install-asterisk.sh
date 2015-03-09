@@ -22,6 +22,7 @@ source funcoes.sh
     echo "  5)  Instalar Mesa Operadora"
     echo "  6)  Instalar DONGLE USB"
     echo "  7)  Instalar Tarifador"
+    echo "  8)  Instalar VPN"
     echo "  0)  Sair"
     echo -n "(0-7) : "
     read OPTION < /dev/tty
