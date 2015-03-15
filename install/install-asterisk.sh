@@ -23,8 +23,9 @@ source funcoes.sh
     echo "  6)  Instalar DONGLE USB"
     echo "  7)  Instalar Tarifador"
     echo "  8)  Instalar VPN"
+    echo "  9)  Instalar Asterisk"
     echo "  0)  Sair"
-    echo -n "(0-7) : "
+    echo -n "(0-9) : "
     read OPTION < /dev/tty
 
 ExitFinish=0
@@ -130,6 +131,16 @@ while [ $ExitFinish -eq 0 ]; do
 			#Install VPN
 			clear
 			func_vpn
+			bash install-asterisk.sh
+		;;
+
+		9)
+
+		  #Instalando ASTERISK
+			clear
+			cd /usr/src/
+			wget --no-check-certificate https://raw.githubusercontent.com/gu1lhermematos/BOXFACIL/$BRANCH/install/install-tofalando.sh
+			func_install_asterisk
 			bash install-asterisk.sh
 		;;
 
