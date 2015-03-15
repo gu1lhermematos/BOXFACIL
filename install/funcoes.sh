@@ -389,9 +389,7 @@ func_install_dongle  () {
 	
 }
 
-
-
-func_install_A2B  () { 
+func_install_A2B_snep  () { 
 
 				cd /usr/src/
 				#Instalando dependencias
@@ -443,6 +441,69 @@ func_install_A2B  () {
 				
 				# Instalando base A2B
 				cd /var/www/ipbx/install
+				echo "create database billing" | mysql -u root -ptofalando2014
+				wget --no-check-certificate https://raw.githubusercontent.com/gu1lhermematos/BOXFACIL/$BRANCH/install/billing.sql
+				mysql -u root -ptofalando2014 billing < billing.sql
+				rm -rf billing.conf
+				# FIM Instalando base A2B
+				
+				cd /usr/src
+				ExitFinish=1
+	
+}
+
+func_install_A2B  () { 
+
+				cd /usr/src/
+				#Instalando dependencias
+				apt-get update
+				apt-get upgrade
+				apt-get install libapache2-mod-php5 php5 php5-common
+				apt-get install php5-cli php5-mysql mysql-server apache2 php5-gd  php5-mcrypt
+				apt-get install build-essential wget libssl-dev libncurses5-dev libnewt-dev  libxml2-dev linux-headers-$(uname -r) libsqlite3-dev uuid-dev
+				
+				#Instalando o A2Billing
+				mkdir /usr/src/billing
+				cd /usr/src/billing
+				wget --no-check-certificate https://raw.githubusercontent.com/gu1lhermematos/BOXFACIL/$BRANCH/install/a2billing.tgz
+				tar zxvf a2billing.tgz
+				chmod -R 777 /usr/src/billing
+				mv a2billing-master/* .
+				ln -s /usr/src/billing/a2billing.conf /etc/a2billing.conf
+				ln -s /usr/src/billing/AGI/lib/ /var/lib/asterisk/agi-bin/lib
+				ln -s /usr/src/billing/AGI/a2billing.php /var/lib/asterisk/agi-bin/a2billing.php
+				chmod 755 /var/lib/asterisk/agi-bin/a2billing.php
+				chmod -R 755 /var/lib/asterisk/agi-bin/lib
+				cd /usr/src/billing/addons/sounds
+				bash install_a2b_sounds.sh
+				chmod -R 755 /usr/src/billing/addons/sounds
+				cd /var/www/
+				mkdir billing
+				ln -s /usr/src/billing/admin/ /var/www/billing/admin
+				ln -s /usr/src/billing/customer/ /var/www/billing/cliente
+				ln -s /usr/src/billing/agent/  /var/www/billing/agente
+				mkdir -p /var/run/a2billing
+				mkdir /var/log/a2billing/
+				touch /var/log/a2billing/a2billing-daemon-callback.log
+				touch /var/log/a2billing/a2billing-daemon-callback.log
+				touch /var/log/a2billing/cront_a2b_alarm.log
+				touch /var/log/a2billing/cront_a2b_autorefill.log
+				touch /var/log/a2billing/cront_a2b_batch_process.log
+				touch /var/log/a2billing/cront_a2b_bill_diduse.log
+				touch /var/log/a2billing/cront_a2b_subscription_fee.log
+				touch /var/log/a2billing/cront_a2b_currency_update.log
+				touch /var/log/a2billing/cront_a2b_invoice.log
+				touch /var/log/a2billing/a2billing_paypal.log
+				touch /var/log/a2billing/a2billing_epayment.log
+				touch /var/log/a2billing/api_ecommerce_request.log
+				touch /var/log/a2billing/api_callback_request.log
+				touch /var/log/a2billing/a2billing_agi.log
+				cd /usr/src/
+				wget --no-check-certificate https://raw.githubusercontent.com/gu1lhermematos/BOXFACIL/$BRANCH/install/a2billing.conf
+				mv a2billing.conf /usr/src/billing/
+				
+				# Instalando base A2B
+				cd /usr/src/install
 				echo "create database billing" | mysql -u root -ptofalando2014
 				wget --no-check-certificate https://raw.githubusercontent.com/gu1lhermematos/BOXFACIL/$BRANCH/install/billing.sql
 				mysql -u root -ptofalando2014 billing < billing.sql
