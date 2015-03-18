@@ -32,7 +32,7 @@ while [ $ExitFinish -eq 0 ]; do
                         if [ $valor_digitado -eq 1 ]; then
                                 export BOXFACIL=$BOXFACIL
                                 wget https://raw.githubusercontent.com/gu1lhermematos/BOXFACIL/master/install/install-pabx.sh
-                                bash install-asterisk.sh
+                                bash install-pabx.sh
                                 ExitFinish=1
                                 else
                                 OPTION=1;
