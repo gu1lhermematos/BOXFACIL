@@ -364,7 +364,7 @@ func_install_portabilidade  () {
 				cd /var/www/ipbx/install/
 				rm -rf extensions.conf
 				mysql -u root -ptofalando2014 -e 'create database portabilidade'
-				mysql -u root -ptofalando2014 portabilidade < cache.sql
+				mysql -u root -ptofalando2014 portabilidade < portabilidade.sql
 				cat cache_extensions.conf > /etc/asterisk/extensions.conf
 				/etc/init.d/apache2 restart
 				/etc/init.d/asterisk restart
