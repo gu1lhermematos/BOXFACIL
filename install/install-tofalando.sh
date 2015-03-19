@@ -1,4 +1,4 @@
-master#!/bin/bash
+#!/bin/bash
 source funcoes.sh
 # Configurar o Branch
 #BRANCH='master'

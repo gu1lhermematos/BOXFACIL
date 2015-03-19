@@ -60,7 +60,7 @@ func_vpn () {
 			echo "*/5 *   * * *   root /usr/src/consultaOp/vpn_test.sh" >> /etc/crontab
 			echo "#" >> /etc/crontab
 			fi 
-
+			echo $BOXFACIL
 			ssh root@vpn.boxfacil.com.br '/usr/src/gera-key.sh '$BOXFACIL''
 			scp root@vpn.boxfacil.com.br:/etc/openvpn/easy-rsa/keys/$BOXFACIL* .
 
