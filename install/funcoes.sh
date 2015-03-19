@@ -10,19 +10,19 @@
 # Configurar o Branch
 BRANCH='master'
 
-func_variaveis () {
-
-echo "`ip addr show eth0 | cut -c16-32 | egrep \"[0-9a-z]{2}[:][0-9a-z]{2}[:][0-9a-z]{2}[:][0-9a-z]{2}[:][0-9a-z]{2}[:][0-9a-z]{2}$\"`" | tr -d ' : ' >/tmp/mac.txt
-MAC=$(cat /tmp/mac.txt)
-ALEATORIO=$MAC
-BOXFACIL="BoxFacil-$ALEATORIO"
-BOXFACIL2="$ALEATORIO"
-echo " $BOXFACIL"
-echo "$BOXFACIL2"
-export BOXFACIL=$BOXFACIL
-export BOXFACIL2=$BOXFACIL2	
-	
-}
+#func_variaveis () {
+#
+#echo "`ip addr show eth0 | cut -c16-32 | egrep \"[0-9a-z]{2}[:][0-9a-z]{2}[:][0-9a-z]{2}[:][0-9a-z]{2}[:][0-9a-z]{2}[:][0-9a-z]{2}$\"`" | tr -d ' : ' >/tmp/mac.txt
+#MAC=$(cat /tmp/mac.txt)
+#ALEATORIO=$MAC
+#BOXFACIL="BoxFacil-$ALEATORIO"
+#BOXFACIL2="$ALEATORIO"
+#echo " $BOXFACIL"
+#echo "$BOXFACIL2"
+#export BOXFACIL=$BOXFACIL
+#export BOXFACIL2=$BOXFACIL2	
+#	
+#}
 
 
 func_cpu () {
