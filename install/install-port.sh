@@ -77,7 +77,7 @@ ln -s /usr/src/consultaOp/consultaOp.php /var/lib/asterisk/agi-bin/consultaOp.ph
 		fi 
 				
 	echo "Instalação Portabilidade terminada."
-	exit
+	bash install-asterisk.sh
 }
 
-bash install-asterisk.sh
+menu
