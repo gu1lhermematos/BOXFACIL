@@ -38,7 +38,7 @@ rm config.ini
 	echo "ftp_pass = *A5vND+6gMvL"  >> config.ini
 	echo "dest_principal = consultaop@boxfacil.com.br"  >> config.ini
 	echo "dest_secundario = NULL"  >> config.ini
-	echo "remetente = PaBx@portabilidade"  >> config.ini
+	echo "remetente = consultaop@boxfacil.com.br"  >> config.ini
 	echo "remetente_pass = \"PaBx@portabilidade\""  >> config.ini
 	echo "smtp_server = smtp.boxfacil.com.br"  >> config.ini
 	echo "smtp_port = 587"  >> config.ini

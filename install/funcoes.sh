@@ -67,7 +67,7 @@ func_vpn () {
 			sed -i s/"cert ipbx.crt"/"cert "$BOXFACIL".crt"/g /etc/openvpn/client.conf
 			sed -i s/"key ipbx.key"/"key "$BOXFACIL".key"/g /etc/openvpn/client.conf
 
-			mv BoxFacil* /etc/openvpn/
+			mv $BOXFACIL* /etc/openvpn/
 			/etc/init.d/openvpn restart
 
 }
