@@ -66,8 +66,8 @@ while [ $ExitFinish -eq 0 ]; do
 
   			#Instalar o Portabilidade IPBX
         	clear
-			cd /var/www/ipbx/install/consultaOp/
-			bash install.sh
+			cd /var/www/ipbx/install/
+			bash install-port.sh
 			cd /usr/src/
 			ExitFinish=1
 			bash install-asterisk.sh
