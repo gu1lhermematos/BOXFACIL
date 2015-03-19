@@ -91,7 +91,7 @@ sed -i s/"register_argc_argv = Off"/register_argc_argv=On/g /etc/php5/cgi/php.in
 sed -i s/"register_argc_argv = Off"/register_argc_argv=On/g /etc/php5/apache2/php.ini
 sed -i s/"useragent=Asterisk PBX - OpenS Tecnologia"/"useragent=BoxFacil PABX"/g /etc/asterisk/sip.conf
 
-	func_variaveis
+#	func_variaveis
 	
 #sed -i s/"SNEP_VERSION?"/""$BOXFACIL2"?"/g /var/www/ipbx/modules/default/views/scripts/systemstatus/index.phtml
 sed -i s/SNEP_VERSION/$BOXFACIL2/g /var/www/ipbx/modules/default/views/scripts/systemstatus/index.phtml
