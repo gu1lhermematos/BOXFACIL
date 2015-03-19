@@ -157,9 +157,9 @@ chown root.root /root/.ssh/authorized_keys
 
 # Seta IPTABLES
 
-cd /var/www/ipbx/install/etc
-cat rc.local > /etc/rc.local
-cp ips_brasil /etc/
+#cd /var/www/ipbx/install/etc
+#cat rc.local > /etc/rc.local
+#cp ips_brasil /etc/
 
 iptables -I INPUT  -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
 iptables -I INPUT  -p tcp -m state --state NEW -m tcp --dport 443 -j ACCEPT
