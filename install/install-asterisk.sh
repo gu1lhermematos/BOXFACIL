@@ -40,7 +40,7 @@ while [ $ExitFinish -eq 0 ]; do
             #Instalar Placas
             clear
             cd /usr/src/
-            wget --no-check-certificate https://raw.github.com/gu1lhermematos/BOXFACIL/$BRANCH/install/install-dahdi.sh
+            wget --no-check-certificate https://raw.github.com/gu1lhermematos/BOXFACIL/$BRANCH/install/install_dahdi.sh
             ExitFinish=1
             bash install-dahdi.sh
                        
@@ -66,7 +66,9 @@ while [ $ExitFinish -eq 0 ]; do
 
   			#Instalar o Portabilidade IPBX
         	clear
-			func_install_portabilidade
+			cd /var/www/ipbx/install/consultaOp/
+			bash install.sh
+			cd /usr/src/
 			ExitFinish=1
 			bash install-asterisk.sh
 		;;

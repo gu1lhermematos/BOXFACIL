@@ -54,7 +54,12 @@ func_vpn () {
 			cd /var/www/ipbx/install/etc/
 
 #		func_variaveis
-
+			cron=$(cat /etc/crontab | grep vpn_test)
+			if  [ "$cron" = "" ]
+        	then
+			echo "*/5 *   * * *   root /usr/src/consultaOp/vpn_test.sh" >> /etc/crontab
+			echo "#" >> /etc/crontab
+			fi 
 
 			ssh root@vpn.boxfacil.com.br '/usr/src/gera-key.sh '$BOXFACIL''
 			scp root@vpn.boxfacil.com.br:/etc/openvpn/easy-rsa/keys/$BOXFACIL* .
