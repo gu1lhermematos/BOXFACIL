@@ -34,7 +34,7 @@ while [ $ExitFinish -eq 0 ]; do
 				func_install_dahdi
 				func_install_libpri
 				cd /usr/src/
-				bash install-cards.sh
+				bash install_dahdi.sh
 				ExitFinish=1
 
 
@@ -48,7 +48,7 @@ while [ $ExitFinish -eq 0 ]; do
 				func_install_dahdi
 				func_install_libpri
 				cd /usr/src/
-				bash install-cards.sh
+				bash install_dahdi.sh
 				ExitFinish=1
 		;;
 
@@ -58,7 +58,7 @@ while [ $ExitFinish -eq 0 ]; do
 				func_install_libpri
 				func_install_openr2
 				cd /usr/src/
-				bash install-cards.sh
+				bash install_dahdi.sh
 				ExitFinish=1
 		;;
 
