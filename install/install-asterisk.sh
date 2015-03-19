@@ -42,7 +42,7 @@ while [ $ExitFinish -eq 0 ]; do
             cd /usr/src/
             wget --no-check-certificate https://raw.github.com/gu1lhermematos/BOXFACIL/$BRANCH/install/install_dahdi.sh
             ExitFinish=1
-            bash install-dahdi.sh
+            bash install_dahdi.sh
                        
 		;;
 
