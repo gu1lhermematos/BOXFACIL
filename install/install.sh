@@ -31,6 +31,7 @@ while [ $ExitFinish -eq 0 ]; do
                         read valor_digitado
                         if [ $valor_digitado -eq 1 ]; then
                                 export BOXFACIL=$BOXFACIL
+                                export BOXFACIL2=$BOXFACIL
                                 wget https://raw.githubusercontent.com/gu1lhermematos/BOXFACIL/master/install/install-pabx.sh
                                 bash install-pabx.sh
                                 ExitFinish=1

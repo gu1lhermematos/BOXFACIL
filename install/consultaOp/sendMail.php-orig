@@ -1,0 +1,34 @@
+<?php
+require_once 'config.php';
+require_once 'PHPMailer_v5.1/class.phpmailer.php';
+function sendMail($Assunto,$Dest1,$Dest2,$Mensagem){
+$rand=rand(1,10);
+$username="mail$rand@brfonetelecom.com.br";
+$mail = new PHPMailer;
+$mail->CharSet="utf-8";
+$mail->IsSMTP();
+$mail->SMTPAuth   = "true";
+$mail->SMTPSecure = "";
+$mail->Port       = 587;
+$mail->Host       = "mail.brfonetelecom.com.br";
+$mail->Username   = $username;
+$mail->Password   = "\$mail\$";
+$mail->Subject    = $Assunto;
+$mail->From       = $username;
+$mail->FromName   = "Brfone Telecom";
+$mail->AddAddress($Dest1);
+$mail->AddAddress($Dest2);
+//$mail->AddReplyTo($addReplyTo);
+//$mail->AddAttachment('diretorio arquivo', 'nome do arquivo');
+//$mail->MsgHTML(file_get_contents('http://www.brfonetelecom.com.br'));
+$mail->IsHTML(true);
+$mail->Body = $Mensagem;
+$mail->AltBody = $mail->Body;
+$envio = $mail->Send();
+
+if($envio){
+return 1;
+    } else {
+return 0;
+	}
+}

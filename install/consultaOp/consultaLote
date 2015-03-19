@@ -1,0 +1,18 @@
+#!/usr/bin/php -q
+<?php
+date_default_timezone_set('America/Sao_Paulo');
+$file    = $argv[1];
+$newFile = "new-". $file;
+$chave   = 235874129;
+$host    = "127.0.0.1";
+if (file_exists($newFile)) {
+        unlink($newFile);
+}
+$lines = file("$file");
+for ($i = 0; $i < count($lines); $i++){
+if (list($numero) = split("\n", $lines[$i])){
+$url="http://$host/consultaOperadora.php?numero=$numero&chave=$chave";
+$operadora = trim(file_get_contents($url));
+`echo "$numero;$operadora" >>$newFile`;
+  }
+}

@@ -11,7 +11,7 @@ source funcoes.sh
     clear
     echo " > Instalar PLACAS BoxFacil"
     echo "====================================="
-    echo "  1)  Instalar PLaca E1 - R2"
+    echo "  1)  Instalar Dahdi"
     echo "  2)  Instalar Placa E1 - ISDN "
     echo "  3)  Instalar Placa TRONCO FXO/FXS "
     echo "  4)  Instalar Placa E1 R2 + FXO/FXS "

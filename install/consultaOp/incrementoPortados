@@ -1,0 +1,176 @@
+#!/usr/bin/php -q
+<?php
+$system = parse_ini_file("config.ini");
+$local  = dirname( realpath( __FILE__ ) );
+include "$local/vars.php";
+include "$local/conecta.php";
+include "$local/sendMail.php";
+
+// INFORMACOES PARA ACESO AO FTP
+$ftpServer   = "ftp.brfonetelecom.com.br";
+$ftpUser     = "guimatos@brfonetelecom.com.br";
+$ftpPass     = "*A5vND+6gMvL";
+$dir         = "incremento";
+$hoje        = date("Y-m-d"); //data atual
+$homtem      = date('dmy', strtotime("-1 days",strtotime($hoje)));
+$arquivo     = $homtem . ".csv";
+
+$Dest1     = "guilherme@xturbo.com.br";
+$Dest2     = "contato@brfonetelecom.com.br";
+$destNome  = "Guilherme Matos";
+$Assunto   = "Update de portados ($destNome)";
+$tabela    = "portados";
+
+echo "\n";
+
+if (file_exists($local . "/" . $arquivo)) {
+    `rm $local/$arquivo`;
+} 
+
+echo"Iniciando importação " . date('d-m-Y H:m:s') . "\n";
+
+// ABRE CONEXAO COM FTP //////////////////////////////////////////////////////////////////////
+$conexao = ftp_connect($ftpServer) or die("Não foi possível conectar à $ftpServer \n");
+
+// LOGIN 
+if (@ftp_login($conexao, $ftpUser, $ftpPass)) {
+
+//LIGAR MODO PASSIVO
+ftp_pasv($conexao, true);
+
+    echo "Conectado em $ftpServer \n";
+} else {
+echo "Não foi possível comnectar como $ftpUser \n";
+$Mensagem = "Olá $destNome, \n <br>
+Houve erro ao baixar, o $arquivo não foi possível comnectar como $ftpUser. \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $destNome \n <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$Dest1,$Dest2,$Mensagem);
+exit;
+}
+//TROCANDO DE DIRETORIO
+if(isset($dir)){
+if (ftp_chdir($conexao, $dir)) {
+echo "Diretório atual: " . ftp_pwd($conexao)  . "\n";
+} else {
+echo "Não foi possível de diretório \n";
+}
+}
+
+// CAPITURANDO TAMANHO DO ARQUIVO
+$tamFileFtp = ftp_size($conexao, $arquivo);
+
+if ($tamFileFtp != -1) {
+    echo "Tamanho do arquivo $arquivo no servidor Ftp é: $tamFileFtp bytes \n";
+} else {
+echo "Arquivo $arquivo não existe no servidor de Ftp \n";
+$Mensagem = "Olá $destNome, \n <br>
+Houve erro ao baixar o arquivo $arquivo, o mesmo não existe no ftp. \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $destNome \n <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$Dest1,$Dest2,$Mensagem);
+exit;
+}
+
+echo "Baixando " . $arquivo . "... \n";
+
+if (ftp_get($conexao, $arquivo, $arquivo, FTP_BINARY)) {
+    echo "Arquivo gravado com sucesso: $arquivo\n";
+} else {
+echo "Erro ao baixar $arquivo \n";
+$Mensagem = "Olá $destNome, \n <br>
+Houve erro ao baixar, o $arquivo. \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $destNome \n <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$Dest1,$Dest2,$Mensagem);
+exit;
+}
+// FECHA CONEXAO 
+ftp_close($conexao);
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+$tamFileBaixado = filesize("./$arquivo");
+
+echo "O tamanho do arquivo baixado é $tamFileBaixado \n";
+
+if($tamFileFtp != $tamFileBaixado){
+echo "Tamanho não confere \n
+Tamanho do arquivo no Ftp: $tamFileFtp bytes \n
+Tamanho do arquivo baixado: $tamFileBaixado \n ";
+$Mensagem = "Olá $destNome, \n <br>
+Houve erro ao baixar o arquivo $arquivo, tamanho não confere. \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $destNome \n <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$Dest1,$Dest2,$Mensagem);
+exit;
+}
+echo "Arquivo baixado e conferido \n";
+
+`mv $arquivo $local`;
+echo "importando prefixos \n";
+
+
+$lines = gzfile("$local/$arquivo");
+$count=0;
+$insert=0;
+$remove=0;
+$inicio = date("d/m/Y H:i:s");
+foreach ($lines as $line) {
+$data = explode(";",$line);
+
+echo "$data[1],$data[2],$data[3],$data[4] \n";
+
+if(isset($data[1]) ==! "" && isset($data[2]) ==! "" && isset($data[3]) ==! "" && isset($data[4]) ==! "" && $count != 0){
+
+
+if($data[4] == 0){
+
+$query = mysql_query("SELECT numero FROM portados WHERE numero='$data[1]'") or die (mysql_error());
+if(mysql_num_rows($query) > 0){
+
+$sql = mysql_query("DELETE FROM $tabela WHERE numero='$data[1]'") or die(mysql_error());
+$remove++;
+	}
+}
+
+if($data[4] == 1){
+$query = mysql_query("SELECT numero FROM portados WHERE numero='$data[1]'") or die (mysql_error());
+if(mysql_num_rows($query) <= 0){
+$sql = "INSERT INTO $tabela VALUES ('$data[1]', '$data[2]', '$data[3]', '$data[4]')";
+$insert++;
+		}
+	}
+}
+$count++;
+}
+
+$final = date("d/m/Y H:i:s");
+$Mensagem = "Olá $destNome, \n <br>
+Atualização da tabela de não portados realizada com Sucesso! \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $destNome \n <br>
+Início: $inicio \n <br>
+Final: $final \n <br>
+Número de registros: $count \n <br>
+Número de inserções: $insert \n <br>
+Número de remoções: $remove \n <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$Dest1,$Dest2,$Mensagem);
+
+if (file_exists($local . "/" . $arquivo)) {
+    `rm $local/$arquivo`;
+}
+
+echo"
+Data/Hora: $dataHoraBr \n
+Cliente: $destNome \n
+Início: $inicio \n
+Final: $final \n
+Número de registros: $count \n
+Número de inserções: $insert \n
+Número de remoções: $remove \n
+";

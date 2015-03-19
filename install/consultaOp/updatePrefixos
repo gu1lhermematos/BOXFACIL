@@ -1,0 +1,168 @@
+#!/usr/bin/php -q
+<?php
+$system = parse_ini_file("config.ini");
+$local  = dirname( realpath( __FILE__ ) );
+include "$local/vars.php";
+include "$local/conecta.php";
+include "$local/sendMail.php";
+// FTP INFO
+$dir         = "full";
+$arquivo     = "portabilidade.gz";
+$novoArquivo = "portabilidade.csv";
+
+$Assunto   = "Update $system[tb_nao_portados] ($system[dest_nome])";
+
+echo"Iniciando importação " . date('d-m-Y H:m:s') . "\n";
+
+if (file_exists($local . "/" . $arquivo)) {
+    `rm $local/$arquivo`;
+}   
+
+if (file_exists($local . "/" . $novoArquivo)) {
+    `rm $local/$novoArquivo`;
+}
+
+$dir         = "cadup";
+$arquivo     = "cadup.gz";
+
+// ABRE CONEXAO COM FTP //////////////////////////////////////////////////////////////////////
+$conexao = ftp_connect($system['ftp_server']) or die("Não foi possível conectar à $system[ftp_server] \n");
+
+// LOGIN 
+if (@ftp_login($conexao, $system['ftp_user'], $system['ftp_pass'])) {
+
+//LIGAR MODO PASSIVO
+ftp_pasv($conexao, true);
+
+    echo "Conectado em $system[ftp_server] \n";
+} else {
+echo "Não foi possível conectar como $system[ftp_user] \n";
+$Mensagem = "Olá $system[dest_nome], \n <br>
+Houve erro ao baixar, o $arquivo não foi possível comnectar como $system[ftp_user] \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $system[dest_nome] \n <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$system['dest_principal'],$system['dest_secundario'],$Mensagem);
+exit;
+}
+//TROCANDO DE DIRETORIO
+if(isset($dir)){
+if (ftp_chdir($conexao, $dir)) {
+echo "Diretório atual: " . ftp_pwd($conexao)  . "\n";
+} else {
+echo "Não foi possível de diretório \n";
+}
+}
+
+// CAPITURANDO TAMANHO DO ARQUIVO
+$tamFileFtp = ftp_size($conexao, $arquivo);
+
+if ($tamFileFtp != -1) {
+    echo "Tamanho do arquivo $arquivo no servidor Ftp é: $tamFileFtp bytes \n";
+} else {
+echo "Arquivo $arquivo não existe no servidor de Ftp \n";
+$Mensagem = "Olá $system[dest_nome],
+Houve erro ao baixar o arquivo $arquivo, o mesmo não existe no ftp. \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $system[dest_nome] \n <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$system['dest_principal'],$system['dest_secundario'],$Mensagem);
+exit;
+}
+
+echo "Baixando " . $arquivo . "... \n";
+
+if (ftp_get($conexao, $arquivo, $arquivo, FTP_BINARY)) {
+    echo "Arquivo gravado com sucesso: $arquivo\n";
+} else {
+echo "Erro ao baixar $arquivo \n";
+$Mensagem = "$system[dest_nome], \n <br>
+Houve erro ao baixar, o $arquivo. \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $system[dest_nome] \n <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$system['dest_principal'],$system['dest_secundario'],$Mensagem);
+exit;
+}
+// FECHA CONEXAO 
+ftp_close($conexao);
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+$tamFileBaixado = filesize("./$arquivo");
+
+echo "O tamanho do arquivo baixado é $tamFileBaixado \n";
+
+if($tamFileFtp != $tamFileBaixado){
+echo "Tamanho não confere \n
+Tamanho do arquivo no Ftp: $tamFileFtp bytes \n
+Tamanho do arquivo baixado: $tamFileBaixado \n ";
+$Mensagem = "Olá $system[dest_nome], \n <br>
+Houve erro ao baixar o arquivo $arquivo, tamanho não confere. \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $system[dest_nome] \n <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$system['dest_principal'],$system['dest_secundario'],$Mensagem);
+exit;
+}
+echo "Arquivo baixado e conferido \n";
+
+`mv $arquivo $local`;
+echo "importando prefixos \n";
+
+
+$lines = gzfile("$local/$arquivo");
+$count=0;
+$atualizados=0;
+$inicio = date("d/m/Y H:i:s");
+foreach ($lines as $line) {
+$data = explode(";",$line);
+$data[0]   = str_replace('\'', '', $data[0]);
+$data[0]   = utf8_encode($data[0]);
+$operadora = explode(" ", $data[0]);
+$data[0]   = $operadora[0];
+$data[0]   = strtoupper($data[0]);
+
+
+if(isset($data[0]) ==! "" && isset($data[1]) ==! "" && isset($data[2]) ==! "" && isset($data[3]) ==! "" && isset($data[4]) ==! "" && $count !== 2){
+
+if($data[1] == "F") $data[1]="FIXO"; if($data[1] == "M") $data[1]="MÓVEL"; if($data[1] == "E") $data[1]="RÁDIO"; if($data[1] == "R") $data[1]="RÁDIO";
+
+$select = mysql_query("SELECT * FROM $system[tb_nao_portados] WHERE prefixo='$data[3]$data[4]'") or die(mysql_error());
+$rows = mysql_num_rows($select);
+
+if($rows == 0){
+ if ($count != 0){
+$sql = "INSERT INTO $system[tb_nao_portados] VALUES ('', '$data[0]', '$data[1]', '$data[3]$data[4]', '$data[2]')";
+$ret    = mysql_query($sql);
+if(!$ret) {
+$final = date("d/m/Y H:i:s");
+$Mensagem = "Olá $system[dest_nome], \n <br>
+Houve erro na Atualização na tabela de não $system[tb_nao_portados] \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $system[dest_nome] \n <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$system['dest_principal'],$system['dest_secundario'],$Mensagem);
+exit;
+}
+$atualizados++;
+                                }
+                        }
+               }
+$count++;
+}
+
+$final = date("d/m/Y H:i:s");
+$Mensagem = "Olá $system[dest_nome], \n <br>
+Atualização da tabela de não $system[tb_nao_portados] realizada com Sucesso! \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $system[dest_nome] \n <br>
+Início: $inicio \n <br>
+Final: $final \n <br>
+Número de registros: $count \n <br>
+Número de inserções: $atualizados \n <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$system['dest_principal'],$system['dest_secundario'],$Mensagem);
+
+if (file_exists($local . "/" . $arquivo)) {
+    `rm $local/$arquivo`;
+}

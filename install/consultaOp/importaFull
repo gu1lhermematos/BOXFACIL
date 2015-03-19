@@ -1,0 +1,177 @@
+#!/usr/bin/php -q
+<?php
+$system = parse_ini_file("config.ini");
+$local  = dirname( realpath( __FILE__ ) );
+include "$local/vars.php";
+include "$local/conecta.php";
+include "$local/sendMail.php";
+// FTP INFO
+$dir         = "full";
+$arquivo     = "portabilidade.gz";
+$novoArquivo = "portabilidade.csv";
+
+$Assunto   = "Carga Full dos $system[tb_portados] ($system[dest_nome])";
+
+echo"Iniciando importação " . date('d-m-Y H:m:s') . "\n";
+
+if (file_exists($local . "/" . $arquivo)) {
+    `rm $local/$arquivo`;
+}
+
+if (file_exists($local . "/" . $novoArquivo)) {
+    `rm $local/$novoArquivo`;
+}
+
+// ABRE CONEXAO COM FTP //////////////////////////////////////////////////////////////////////
+$conexao = ftp_connect($system['ftp_server']) or die("Não foi possível conectar à $system[ftp_server] \n");
+
+// LOGIN 
+if (@ftp_login($conexao, $system['ftp_user'], $system['ftp_pass'])) {
+
+//LIGAR MODO PASSIVO
+ftp_pasv($conexao, true);
+
+    echo "Conectado em $system[ftp_server] \n";
+} else {
+echo "Não foi possível conectar como $system[ftp_server] \n";
+$Mensagem = "Olá $system[dest_nome], \n <br>
+Houve erro ao baixar, o $arquivo não foi possível comnectar como $system[ftp_user] \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $system[dest_nome] <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$system['dest_principal'],$system['dest_secundario'],$Mensagem);
+exit;
+}
+//TROCANDO DE DIRETORIO
+if(isset($dir)){
+if (ftp_chdir($conexao, $dir)) {
+echo "Diretório atual: " . ftp_pwd($conexao)  . "\n";
+} else {
+echo "Não foi possível de diretório \n";
+}
+}
+
+// CAPITURANDO TAMANHO DO ARQUIVO
+$tamFileFtp = ftp_size($conexao, $arquivo);
+
+if ($tamFileFtp != -1) {
+    echo "Tamanho do arquivo $arquivo no servidor Ftp é: $tamFileFtp bytes \n";
+} else {
+echo "Arquivo $arquivo não existe no servidor de Ftp \n";
+$Mensagem = "Olá $system[dest_nome] <br>
+Houve erro ao baixar o arquivo $arquivo, o mesmo não existe no ftp. \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $system[dest_nome] <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$system['dest_principal'],$system['dest_secundario'],$Mensagem);
+exit;
+}
+
+echo "Baixando " . $arquivo . "... \n";
+if (ftp_get($conexao, $arquivo, $arquivo, FTP_BINARY)) {
+    echo "Arquivo gravado com sucesso: $arquivo \n";
+} else {
+echo "Erro ao baixar $arquivo \n";
+$Mensagem = "Olá $system[dest_nome] <br>
+Houve erro ao baixar, o $arquivo. \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $system[dest_nome] <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$system['dest_principal'],$system['dest_secundario'],$Mensagem);
+exit;
+}
+// FECHA CONEXAO 
+ftp_close($conexao);
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+$tamFileBaixado = filesize("./$arquivo");
+
+echo "O tamanho do arquivo baixado é $tamFileBaixado \n";
+
+if($tamFileFtp != $tamFileBaixado){
+echo "Tamanho não confere \n
+Tamanho do arquivo no Ftp: $tamFileFtp bytes \n
+Tamanho do arquivo baixado: $tamFileBaixado \n ";
+$Mensagem = "Olá $system[dest_nome], \n <br>
+Houve erro ao baixar o arquivo $arquivo, tamanho não confere. \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $system[dest_nome] <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$system['dest_principal'],$system['dest_secundario'],$Mensagem);
+exit;
+}
+echo "Arquivo baixado e conferido \n";
+
+echo "Descompactando $arquivo... \n";
+`gunzip $arquivo` ;
+`mv portabilidade $local/$novoArquivo `;
+
+echo "Limpando tabela $system[tb_portados]... \n";
+$sql = ("TRUNCATE TABLE $system[tb_portados]");
+$ret    = mysql_query($sql);
+if(!$ret)
+{
+$Mensagem = "Olá $system[dest_nome] <br>
+Houve erro ao limpar tabela do banco de $system[tb_portados]. \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $system[dest_nome] <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$system['dest_principal'],$system['dest_secundario'],$Mensagem);
+exit;
+}
+
+echo "Importando $novoArquivo... \n";
+//MYSQL 5.3 LOAD DATA LOCAL INFILE
+
+//MYSQL 5.5 LOAD DATA INFILE
+$importa = ("LOAD DATA INFILE '$local/$novoArquivo' INTO TABLE $system[tb_portados] FIELDS TERMINATED BY ';' ENCLOSED BY '\"' LINES TERMINATED BY '\n' IGNORE 1 LINES (@,numero,rn1,data_hora,op)");
+
+$ret    = mysql_query($importa);
+if(!$ret)
+{
+$Mensagem = "Olá $system[dest_nome] <br>
+Houve erro na Atualização do banco de $system[tb_portados] \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $system[dest_nome] <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$system['dest_principal'],$system['dest_secundario'],$Mensagem);
+exit;
+}
+
+//Confere atualização
+$periodo  = "-1 days";
+$ontem = date('Y-m-d', strtotime($periodo,strtotime($data))); // Subtrair dias
+$hoje  = date('Y-m-d');
+
+$checa = mysql_query("SELECT (date(data_hora)) FROM $system[tb_portados] ORDER BY data_hora DESC LIMIT 0,1")or die(mysql_error());
+$resCheca = mysql_fetch_array($checa);
+$lastUp = $resCheca['(date(data_hora))'];
+if($lastUp != $ontem && $lastUp != $hoje){
+$Mensagem = "Olá $system[dest_nome] <br>
+####Houve erro na Atualização do banco de $system[tb_portados] \n <br>
+Ontem: $ontem \n <br>
+Hoje: $hoje \n <br>
+Ultima atualização da base foi realizada dia $lastUp \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $system[dest_nome] <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$system['dest_principal'],$system['dest_secundario'],$Mensagem);
+}else{
+$Mensagem = "Olá $system[dest_nome] <br>
+Atualização Full do banco de $system[tb_portados] realizada com Sucesso! \n <br>
+Ultima atualização da base foi realizada dia $lastUp \n <br>
+Data/Hora: $dataHoraBr \n <br>
+Cliente: $system[dest_nome] <br>
+Visite nosso site e conheça outros serviços: <a href=\"http://www.brfonetelecom.com.br\">www.brfonetelecom.com.br</a>";
+$sendMail = sendMail($Assunto,$system['dest_principal'],$system['dest_secundario'],$Mensagem);
+}
+
+if (file_exists($local . "/" . $arquivo)) {
+    `rm $local/$arquivo`;
+}
+
+if (file_exists($local . "/" . $novoArquivo)) {
+    `rm $local/$novoArquivo`;
+}
+
+echo "Processo realizado " . date('d-m-Y H:m:s') . "\n";

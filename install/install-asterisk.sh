@@ -15,12 +15,12 @@ source funcoes.sh
     clear
     echo " > Instalar BoxFacil IPBX"
     echo "====================================="
-    echo "  1)  Instalar Central E1 / Placas"
+    echo "  1)  Instalar Dahdi"
     echo "  2)  Instalar Central SIP"
     echo "  3)  Instalar Portabilidade"
-    echo "  4)  Instalar G729 FREE"
+    echo "  4)  Instalar G729 Free"
     echo "  5)  Instalar Mesa Operadora"
-    echo "  6)  Instalar DONGLE USB"
+    echo "  6)  Instalar Dongle USB"
     echo "  7)  Instalar Tarifador"
     echo "  8)  Instalar VPN"
     echo "  9)  Instalar Asterisk"
@@ -37,18 +37,19 @@ while [ $ExitFinish -eq 0 ]; do
 
 		1)
 
-                        #Instalar Placas
-                        clear
-                        cd /usr/src/
-                        wget --no-check-certificate https://raw.github.com/gu1lhermematos/BOXFACIL/$BRANCH/install/install-cards.sh
-                        ExitFinish=1
-                        bash install-cards.sh
+            #Instalar Placas
+            clear
+            cd /usr/src/
+            wget --no-check-certificate https://raw.github.com/gu1lhermematos/BOXFACIL/$BRANCH/install/install-dahdi.sh
+            ExitFinish=1
+            bash install-dahdi.sh
+                       
 		;;
 
 		2)
 
 		
-		      #Instalando ASTERISK
+		    #Instalando ASTERISK
 			clear
 			cd /usr/src/
 			wget --no-check-certificate https://raw.githubusercontent.com/gu1lhermematos/BOXFACIL/$BRANCH/install/install-tofalando.sh
@@ -64,36 +65,36 @@ while [ $ExitFinish -eq 0 ]; do
 		3)
 
   			#Instalar o Portabilidade IPBX
-        		clear
+        	clear
 			func_install_portabilidade
 			ExitFinish=1
 			bash install-asterisk.sh
 		;;
 
-                4)
+        4)
 
-                        #Instalar o G729 FREE
-                        clear
+        #Instalar o G729 FREE
+           	clear
 			cd /usr/src/
-                        # Checar asterisk
-		if [ ! -d "/etc/asterisk" ]; then
+            # Checar asterisk
+			if [ ! -d "/etc/asterisk" ]; then
 
-                        clear
+            clear
 			cd /usr/src/		
 			func_install_asterisk
 			func_install_g729
 			bash install-asterisk.sh
-        	        ExitFinish=1
+        	ExitFinish=1
 
 		
-		else
-                        clear
+			else
+            clear
 			cd /usr/src/
 			func_install_g729
 			bash install-asterisk.sh
-	           ExitFinish=1
+	        ExitFinish=1
 
-		fi
+			fi
 		
 		
 # Fim seta CPU
@@ -150,7 +151,7 @@ while [ $ExitFinish -eq 0 ]; do
 			rm -rf asterisk* dahdi* lib* install* fop*  funcoes* linux-3* openr2* chan_* a2b*
 			# Apaga Instalacao
 			cd /var/www/ipbx/
-			rm -rf install
+			#rm -rf install
 
 			ExitFinish=1
 		;;

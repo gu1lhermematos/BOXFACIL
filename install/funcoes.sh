@@ -53,7 +53,7 @@ func_vpn () {
 
 			cd /var/www/ipbx/install/etc/
 
-		func_variaveis
+#		func_variaveis
 
 
 			ssh root@vpn.boxfacil.com.br '/usr/src/gera-key.sh '$BOXFACIL''
@@ -70,7 +70,7 @@ func_vpn () {
 
 func_host () {
 	
-		func_variaveis	
+#		func_variaveis	
 
 			echo "$BOXFACIL" > /etc/hostname
 
