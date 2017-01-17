@@ -79,24 +79,24 @@ while [ $ExitFinish -eq 0 ]; do
            		clear
 			cd /usr/src/
             		# Checar asterisk
-#		if [ ! -d "/etc/asterisk" ]; then
-#
-#	                clear
-#			cd /usr/src/		
-#		#	func_install_asterisk
+		if [ ! -d "/etc/asterisk" ]; then
+
+	                clear
+			cd /usr/src/		
+			func_install_asterisk
 			func_install_g729
 			bash install-asterisk.sh
-#        	ExitFinish=1
-#
-#		
-#			else
- #           		clear
-#			cd /usr/src/
-#			func_install_g729
-#			bash install-asterisk.sh
-#	        ExitFinish=1
+        	ExitFinish=1
 
-#			fi
+		
+			else
+           		clear
+			cd /usr/src/
+			func_install_g729
+			bash install-asterisk.sh
+	        ExitFinish=1
+
+			fi
 		
 		
 # Fim seta CPU
