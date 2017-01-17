@@ -208,34 +208,7 @@ func_install_asterisk () {
                         	/etc/init.d/asterisk restart
                         	echo done
                         	ExitFinish=1
-                        
-func_install_asterisk2 () { 
-
-				#Instalando ASTERISK
-				clear
-				rm -rf asterisk*
-                	        cd /usr/src/
-                	        wget -c http://downloads.asterisk.org/pub/telephony/asterisk/old-releases/asterisk-1.8.28.2.tar.gz
-                        	tar zxvf asterisk-1.8.28.2.tar.gz
-                        	ln -s asterisk-1.8.28.2 asterisk
-                        	cd asterisk
-                        	make distclean
-                        	./configure
-                        	contrib/scripts/get_mp3_source.sh
-                        	make menuselect.makeopts
-                        	menuselect/menuselect --disable CORE-SOUNDS-EN-GSM --enable app_mysql --enable cdr_mysql --enable res_config_mysql --enable cdr_odbc --enable res_odbc --enable res_config_odbc --enable  format_mp3 --enable cdr_csv menuselect.makeopts
-                        	make
-                        	make install
-                        	make config
-                        	make samples
-                        	ldconfig
-                        	cd ..
-                        	/etc/init.d/asterisk restart
-                        	echo done
-                        	ExitFinish=1
-                        
-
-}
+}                        
 
 func_libpri () { 
 
