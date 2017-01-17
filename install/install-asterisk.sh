@@ -73,24 +73,24 @@ while [ $ExitFinish -eq 0 ]; do
 			bash install-asterisk.sh
 		;;
 
-        4)
+        	4)
 
-        #Instalar o G729 FREE
-           	clear
+        		#Instalar o G729 FREE
+           		clear
 			cd /usr/src/
-            # Checar asterisk
-			if [ ! -d "/etc/asterisk" ]; then
+            		# Checar asterisk
+		if [ ! -d "/etc/asterisk" ]; then
 
-            clear
+	                clear
 			cd /usr/src/		
-			func_install_asterisk
+		#	func_install_asterisk
 			func_install_g729
 			bash install-asterisk.sh
         	ExitFinish=1
 
 		
 			else
-            clear
+            		clear
 			cd /usr/src/
 			func_install_g729
 			bash install-asterisk.sh
