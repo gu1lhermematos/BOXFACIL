@@ -239,8 +239,9 @@ func_install_openr2 () {
 
                                 cd /usr/src/
                                 rm -rf openr2*
-                                wget -c https://openr2.googlecode.com/files/openr2-1.3.3.tar.gz
-                                tar xvfz openr2-1.3.3.tar.gz
+#                                wget -c https://openr2.googlecode.com/files/openr2-1.3.3.tar.gz
+				wget -c https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/openr2/openr2-1.3.3.tar.gz
+				tar xvfz openr2-1.3.3.tar.gz
                                 ln -s openr2-1.3.3 openr2
 				cd openr2
 				./configure --prefix=/usr
